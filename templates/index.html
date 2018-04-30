@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset = "UTF-8">
+        <title>Convertelligence chatroom</title>
+    </head>
+    <body>
+        <script src='http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>
+        User input: <input id="user_input">
+        <button class="myButton">SEND</button>
+
+        <div id="result"></div>
+
+
+        <script type="text/javascript">
+        $(".myButton").click(function(){
+            var user_input = document.getElementById('user_input').value;
+
+            var $SCRIPT_ROOT = {{ request.script_root|tojson|safe }};
+
+
+            $.ajax({
+                type: "POST",
+                url: $SCRIPT_ROOT + "/predict/",
+                data: JSON.stringify({"data": user_input}, null, '\t'),
+                contentType: 'application/json;charset=UTF-8',
+                success: function(data){
+                            var html = 'Kindly: <b>' + data;
+                            document.getElementById('result').innerHTML = html;
+                    }
+                });
+            });
+        </script>
+    </body>
+</html>
